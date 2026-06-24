@@ -1,20 +1,18 @@
-const BASE_URL = 'https://platzi.com';
+// CAMBIAMOS LA URL BASE POR LA OFICIAL ACTUALIZADA
+const BASE_URL = 'https://api.escuelajs.co/api/v1';
 
-// Obtener todos los productos
 export const fetchProducts = async () => {
   const response = await fetch(`${BASE_URL}/products`);
   if (!response.ok) throw new Error('Error al obtener productos');
   return response.json();
 };
 
-// Obtener todas las categorías
 export const fetchCategories = async () => {
   const response = await fetch(`${BASE_URL}/categories`);
   if (!response.ok) throw new Error('Error al obtener categorías');
   return response.json();
 };
 
-// Obtener detalle de un producto por ID
 export const fetchProductById = async (id) => {
   const response = await fetch(`${BASE_URL}/products/${id}`);
   if (!response.ok) throw new Error('Error al obtener el detalle del producto');

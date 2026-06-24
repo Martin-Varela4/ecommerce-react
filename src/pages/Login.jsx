@@ -4,15 +4,15 @@ import { Box, Typography, TextField, Button, Paper, Alert, Container } from '@mu
 import { useUser } from '../contexts/UserContext'; // <-- Importamos tu contexto obligatorio
 
 export default function Login() { 
-  const { login } = useUser(); // Consumimos la función obligatoria de la consigna
+  const { login } = useUser(); 
   const navigate = useNavigate();
 
-  // Estados locales requeridos por la consigna (Formulario, Error y Loading)
+ 
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Manejador genérico de inputs que ya conoces
+
   const handleChange = (e) => {
     setFormData({ 
       ...formData, 
@@ -20,22 +20,21 @@ export default function Login() {
     });
   };
 
-  // Enfoque adaptado: Sin servidor, simulado localmente mediante Context API
+  
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     setError(null);
     setLoading(true);
     
     try {
-      // Intentamos iniciar sesión con los datos locales de UserContext
       const esExitoso = login(formData.email, formData.password);
       
       if (esExitoso) {
         alert('¡Inicio de sesión correcto!');
-        navigate('/perfil'); // Redirigimos directo al perfil del usuario
+        navigate('/perfil'); 
       }
     } catch (err) {
-      // Capturamos el error si las credenciales no coinciden
+     
       setError(err.message || 'Credenciales inválidas');
     } finally {
       setLoading(false);
@@ -54,10 +53,10 @@ export default function Login() {
           </Typography>
         </Box>
 
-        {/* ALERTA DE ERROR EXIGIDA POR LA CONSIGNA */}
+        
         {error && <Alert severity="error">{error}</Alert>}
         
-        {/* FORMULARIO CONTROLADO CON MATERIAL UI */}
+        
         <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
           <TextField 
             label="Correo Electrónico" 
@@ -93,7 +92,6 @@ export default function Login() {
           </Button>
         </Box>
         
-        {/* LINK CORREGIDO SEGÚN TUS RUTAS (cambiado de /register a /registro) */}
         <Box sx={{ textAlign: 'center', mt: 2, fontSize: '0.9rem' }}>
           ¿No tenés cuenta?{' '}
           <Link to="/registro" style={{ color: '#1976d2', fontWeight: 'bold', textDecoration: 'none' }}>

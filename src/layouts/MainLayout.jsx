@@ -8,6 +8,7 @@ import ContactMailIcon from '@mui/icons-material/ContactMail';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { useUser } from '../contexts/UserContext';
+import Footer from '../components/Footer';
 
 export default function MainLayout() {
   const { carrito } = useCart();
@@ -93,6 +94,9 @@ export default function MainLayout() {
       <Container component="main" maxWidth="lg" sx={{ mt: 4, mb: 4, flexGrow: 1 }}>
         <Outlet />
       </Container>
+
+      <Footer />
+      
     </Box>
   );
 }

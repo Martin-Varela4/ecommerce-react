@@ -1,33 +1,22 @@
 const BASE_URL = 'https://platzi.com';
 
-export const getProducts = async () => {
+// Obtener todos los productos
+export const fetchProducts = async () => {
   const response = await fetch(`${BASE_URL}/products`);
-  if (!response.ok) throw new Error('Error al traer los productos');
+  if (!response.ok) throw new Error('Error al obtener productos');
   return response.json();
 };
 
-export const getProductById = async (id) => {
+// Obtener todas las categorías
+export const fetchCategories = async () => {
+  const response = await fetch(`${BASE_URL}/categories`);
+  if (!response.ok) throw new Error('Error al obtener categorías');
+  return response.json();
+};
+
+// Obtener detalle de un producto por ID
+export const fetchProductById = async (id) => {
   const response = await fetch(`${BASE_URL}/products/${id}`);
-  if (!response.ok) throw new Error('Error al traer el producto');
-  return response.json();
-};
-
-
-export const loginUser = async (email, password) => {
-  const response = await fetch(`${BASE_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
-  });
-  if (!response.ok) throw new Error('Credenciales incorrectas');
-  return response.json(); 
-};
-
-export const getUserProfile = async (token) => {
-  const response = await fetch(`${BASE_URL}/auth/profile`, {
-    method: 'GET',
-    headers: { 'Authorization': `Bearer ${token}` }
-  });
-  if (!response.ok) throw new Error('No se pudo obtener el perfil');
+  if (!response.ok) throw new Error('Error al obtener el detalle del producto');
   return response.json();
 };

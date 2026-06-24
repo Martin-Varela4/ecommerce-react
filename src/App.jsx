@@ -1,16 +1,14 @@
-import { useState } from 'react'
 import { RouterProvider } from 'react-router-dom';
 import { router } from './routes';
-import { AuthProvider } from './contexts/AuthContext';
-import { CartProvider } from './contexts/cartContext';
+import { UserProvider } from './contexts/UserContext';
+import { CartProvider } from './contexts/CartContext'; 
 
 export default function App() {
   return (
-    <AuthProvider>
+    <UserProvider>
       <CartProvider>
         <RouterProvider router={router} />
       </CartProvider>
-    </AuthProvider>
+    </UserProvider>
   );
 }
-

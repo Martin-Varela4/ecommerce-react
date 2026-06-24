@@ -5,12 +5,15 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
-import { useAuth } from '../contexts/AuthContext';
+import { useUser } from '../contexts/UserContext'; 
 
 export default function MainLayout() {
-  const { getCartCount } = useCart();
-  const { isAuthenticated, logout, user } = useAuth();
+  const { carrito } = useCart(); 
+  const { usuario, logout } = useUser(); 
   const navigate = useNavigate();
+
+  
+  const cantidadTotal = carrito.reduce((acc, item) => acc + item.cantidad, 0);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -27,16 +30,26 @@ export default function MainLayout() {
             </Typography>
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <IconButton color="inherit" onClick={() => navigate('/cart')}>
-                <Badge badgeContent={getCartCount()} color="error">
+              <Button color="inherit" onClick={() => navigate('/productos')}>
+                Productos
+              </Button>
+
+              
+              <IconButton color="inherit" onClick={() => navigate('/carrito')}>
+                <Badge badgeContent={cantidadTotal} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
 
-              {isAuthenticated ? (
+              
+              {usuario ? (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' } }}>
-                    Hola, {user?.name || 'Usuario'}
+                  <Typography 
+                    variant="body2" 
+                    sx={{ display: { xs: 'none', sm: 'block' }, cursor: 'pointer', textDecoration: 'underline' }}
+                    onClick={() => navigate('/perfil')}
+                  >
+                    Hola, {usuario.nombre || usuario.name || 'Usuario'}
                   </Typography>
                   <Button 
                     color="inherit" 
@@ -63,6 +76,7 @@ export default function MainLayout() {
         </Container>
       </AppBar>
 
+      
       <Container component="main" maxWidth="lg" sx={{ mt: 4, mb: 4, flexGrow: 1 }}>
         <Outlet />
       </Container>

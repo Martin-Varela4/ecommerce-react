@@ -12,10 +12,8 @@ export default function Perfil() {
   const { carrito } = useCart();
   const navigate = useNavigate();
 
-  // Calcular la cantidad total de productos en el carrito para mostrar en el perfil
   const cantidadEnCarrito = carrito.reduce((acc, item) => acc + item.cantidad, 0);
 
-  // VALIDACIÓN OBLIGATORIA: Si no está logueado, mostrar mensaje correspondiente
   if (!usuario) {
     return (
       <Container maxWidth="sm" sx={{ mt: 4 }}>
@@ -37,7 +35,7 @@ export default function Perfil() {
   return (
     <Container maxWidth="sm">
       <Paper elevation={3} sx={{ p: 4, borderRadius: 2, mt: 4 }}>
-        {/* Encabezado del Perfil */}
+        {/* encabezado */}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
           <Box sx={{ bgcolor: 'primary.main', color: 'white', p: 2, borderRadius: '50%', mb: 1 }}>
             <PersonIcon sx={{ fontSize: 40 }} />
@@ -52,7 +50,7 @@ export default function Perfil() {
 
         <Divider sx={{ mb: 3 }} />
 
-        {/* CONTENIDO DEL PERFIL EXIGIDO POR LA CONSIGNA */}
+
         <Grid container spacing={2.5} sx={{ mb: 4 }}>
           {/* Nombre */}
           <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -88,7 +86,6 @@ export default function Perfil() {
           </Grid>
         </Grid>
 
-        {/* Botón para cerrar sesión */}
         <Button 
           variant="outlined" 
           color="error" 

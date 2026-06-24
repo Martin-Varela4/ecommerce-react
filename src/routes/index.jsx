@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import Home from '../pages/Home';
 import Productos from '../pages/Productos';
@@ -8,10 +8,12 @@ import Login from '../pages/Login';
 import Registro from '../pages/Registro';
 import Perfil from '../pages/Perfil';
 import Contacto from '../pages/Contacto';
+import NotFound from '../pages/NotFound'; 
 
 export const router = createBrowserRouter([
   {
     path: '/',
+    // Grupo de la tienda con Navbar y Footer
     element: <MainLayout />,
     children: [
       { index: true, element: <Home /> },
@@ -20,16 +22,20 @@ export const router = createBrowserRouter([
       { path: 'carrito', element: <CartPage /> },
       { path: 'perfil', element: <Perfil /> },
       { path: 'contacto', element: <Contacto /> },
-      { path: '*', element: <div style={{ padding: '2rem', textAlign: 'center' }}>404 - Página no encontrada</div> },
     ],
   },
   {
-    // pantallas aisladas
+  
     path: '/login',
     element: <Login />,
   },
   {
     path: '/registro',
     element: <Registro />,
+  },
+  {
+  
+    path: '*',
+    element: <NotFound />,
   },
 ]);

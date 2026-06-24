@@ -1,9 +1,13 @@
 import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import Home from '../pages/Home';
+import Productos from '../pages/Productos';
 import ProductDetail from '../pages/ProductDetail';
-import CartPage from '../pages/CartPage';
 import Login from '../pages/Login';
+import Registro from '../pages/Registro';
+import CartPage from '../pages/CartPage';
+import Perfil from '../pages/Perfil';
+import Contacto from '../pages/Contacto';
 
 export const router = createBrowserRouter([
   {
@@ -11,10 +15,14 @@ export const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       { index: true, element: <Home /> },
-      { path: 'product/:id', element: <ProductDetail /> },
-      { path: 'cart', element: <CartPage /> },
+      { path: 'productos', element: <Productos /> },
+      { path: 'producto/:id', element: <ProductDetail /> },
       { path: 'login', element: <Login /> },
-      { path: '*', element: <div style={{ padding: '1rem' }}>404 - No encontrado</div> },
+      { path: 'registro', element: <Registro /> },
+      { path: 'carrito', element: <CartPage /> },
+      { path: 'perfil', element: <Perfil /> },
+      { path: 'contacto', element: <Contacto /> },
+      { path: '*', element: <div style={{ padding: '2rem', textAlign: 'center' }}>404 - Página no encontrada</div> },
     ],
   },
 ]);

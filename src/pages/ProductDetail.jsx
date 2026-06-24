@@ -5,13 +5,14 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { fetchProductById } from '../services/platziApi';
 import { useCart } from '../contexts/CartContext';
+import { useUser } from '../contexts/UserContext';
 
 export default function ProductDetail() {
   const { id } = useParams(); 
   const navigate = useNavigate();
   const { agregarProducto } = useCart(); 
 
- 
+  const { usuario } = useUser();
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -109,16 +110,24 @@ export default function ProductDetail() {
               </Box>
 
               <Button
-                variant="contained"
-                color="secondary"
-                size="large"
-                startIcon={<ShoppingCartIcon />}
-                fullWidth
-                onClick={() => agregarProducto(producto)}
-                sx={{ py: 1.5, fontWeight: 'bold' }}
-              >
-                Agregar al Carrito
-              </Button>
+                  variant="contained"
+                  color="secondary"
+                  size="large"
+                  startIcon={<ShoppingCartIcon />}
+                  fullWidth
+                  onClick={() => {
+                    // 1. IMPORTANTE: Necesitas importar const { usuario } = useUser(); arriba en el componente
+                    if (!usuario) {
+                      alert('Debes iniciar sesión para agregar productos al carrito.');
+                      navigate('/login');
+                    } else {
+                      agregarProducto(producto);
+                    }
+                  }}
+                  sx={{ py: 1.5, fontWeight: 'bold' }}
+                >
+                  Agregar al Carrito
+                </Button>
             </Grid>
           </Grid>
         </Paper>

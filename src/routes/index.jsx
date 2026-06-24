@@ -3,7 +3,7 @@ import MainLayout from '../layouts/MainLayout';
 import Home from '../pages/Home';
 import Productos from '../pages/Productos';
 import ProductDetail from '../pages/ProductDetail';
-import CartPage from '../pages/CartPage'; // <-- ASEGURAMOS LA IMPORTACIÓN REAL
+import CartPage from '../pages/CartPage';
 import Login from '../pages/Login';
 import Registro from '../pages/Registro';
 import Perfil from '../pages/Perfil';
@@ -17,13 +17,19 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'productos', element: <Productos /> },
       { path: 'producto/:id', element: <ProductDetail /> },
-      { path: 'carrito', element: <CartPage /> }, 
-      { path: 'login', element: <Login /> },
-      { path: 'registro', element: <Registro /> },
+      { path: 'carrito', element: <CartPage /> },
       { path: 'perfil', element: <Perfil /> },
       { path: 'contacto', element: <Contacto /> },
       { path: '*', element: <div style={{ padding: '2rem', textAlign: 'center' }}>404 - Página no encontrada</div> },
     ],
   },
+  {
+    // pantallas aisladas
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/registro',
+    element: <Registro />,
+  },
 ]);
-

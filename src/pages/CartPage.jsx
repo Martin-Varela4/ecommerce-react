@@ -10,7 +10,10 @@ export default function CartPage() {
   const { carrito, agregarProducto, eliminarProducto, vaciarCarrito, total } = useCart();
   const navigate = useNavigate();
 
-  // Si el carrito está vacío, muestra un lindo estado informativo
+  
+  const IMAGE_PLACEHOLDER = 'https://placeholder.com';
+
+
   if (carrito.length === 0) {
     return (
       <Box sx={{ textAlign: 'center', py: 8 }}>
@@ -43,9 +46,9 @@ export default function CartPage() {
                 <CardMedia
                   component="img"
                   sx={{ width: 80, height: 80, borderRadius: 1, objectFit: 'cover', mr: 2 }}
-                  image={item.images && item.images[0] ? item.images[0] : 'https://placeholder.com'}
+                  image={item.images && item.images[0] ? item.images[0] : IMAGE_PLACEHOLDER}
                   alt={item.title}
-                  onError={(e) => { e.target.src = 'https://placeholder.com'; }}
+                  onError={(e) => { e.target.src = IMAGE_PLACEHOLDER; }}
                 />
                 <Box>
                   <Typography variant="body1" sx={{ fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' }}>

@@ -10,8 +10,17 @@ export const useProducts = () => {
     const getProducts = async () => {
       try {
         setLoading(true);
+        
         const data = await fetchProducts();
-        setProducts(data);
+        
+        
+        const productosLimpios = data.filter((product, index, self) => 
+          product.title && 
+          product.title.length > 3 && 
+          self.findIndex(p => p.title.toLowerCase() === product.title.toLowerCase()) === index
+        );
+
+        setProducts(productosLimpios);
       } catch (err) {
         setError(err.message);
       } finally {

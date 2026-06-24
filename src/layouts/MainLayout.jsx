@@ -5,10 +5,11 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
+import StorefrontIcon from '@mui/icons-material/Storefront'; 
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { useUser } from '../contexts/UserContext';
-import Footer from '../components/Footer';
+import Footer from '../components/Footer.jsx'; 
 
 export default function MainLayout() {
   const { carrito } = useCart();
@@ -21,65 +22,107 @@ export default function MainLayout() {
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <AppBar position="static" color="primary">
         <Container maxWidth="lg">
-          <Toolbar sx={{ justifyContent: 'space-between', px: 0 }}>
-            {/* LOGO E-COMMERCE */}
+          <Toolbar sx={{ justifyContent: 'space-between', px: 0, gap: 1 }}>
+            
+            
             <Typography 
               variant="h6" 
               component="div" 
-              sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 1, fontWeight: 'bold' }}
+              sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 0.5, fontWeight: 'bold' }}
               onClick={() => navigate('/')}
             >
-              <HomeIcon /> TiendaPlatzi
+              <HomeIcon />
+              <Box component="span" sx={{ display: { xs: 'none', sm: 'block' } }}>
+                TiendaPlatzi
+              </Box>
             </Typography>
 
-            {/* SECCIÓN DE ENLACES DE NAVEGACIÓN */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
+            {/* SECCIÓN DE ENLACES DE NAVEGACIÓN ADAPTABLES */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 0.5, sm: 1.5 } }}>
               
-              {/* Enlace obligatorio a Catálogo General */}
-              <Button color="inherit" onClick={() => navigate('/productos')}>
-                Productos
+              
+              <Button 
+                color="inherit" 
+                onClick={() => navigate('/productos')}
+                startIcon={<StorefrontIcon />}
+                sx={{ minWidth: { xs: 'auto', sm: '64px' }, '& .MuiButton-startIcon': { mr: { xs: 0, sm: 1 } } }}
+              >
+                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Productos</Box>
               </Button>
 
-              {/* Enlace obligatorio a Contacto */}
-              <Button color="inherit" startIcon={<ContactMailIcon />} onClick={() => navigate('/contacto')}>
-                Contacto
+              <Button 
+                color="inherit" 
+                onClick={() => navigate('/contacto')}
+                startIcon={<ContactMailIcon />}
+                sx={{ minWidth: { xs: 'auto', sm: '64px' }, '& .MuiButton-startIcon': { mr: { xs: 0, sm: 1 } } }}
+              >
+                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Contacto</Box>
               </Button>
 
-              {/* Icono del Carrito */}
-              <IconButton color="inherit" onClick={() => navigate('/carrito')}>
+              {/* Icono del Carrito: Se reduce el padding en móviles */}
+              <IconButton color="inherit" onClick={() => navigate('/carrito')} sx={{ p: { xs: 0.5, sm: 1 } }}>
                 <Badge badgeContent={cantidadTotal} color="error">
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
 
-              {/* Enlace condicional a Perfil / Login / Registro */}
+              {/* FLUJO CONDICIONAL AUTENTICACIÓN RESPONSIVO */}
               {usuario ? (
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Button color="inherit" startIcon={<PersonIcon />} onClick={() => navigate('/perfil')}>
-                    Mi Perfil
+                <>
+              
+                  <Button 
+                    color="inherit" 
+                    onClick={() => navigate('/perfil')}
+                    startIcon={<PersonIcon />}
+                    sx={{ minWidth: { xs: 'auto', sm: '64px' }, '& .MuiButton-startIcon': { mr: { xs: 0, sm: 1 } } }}
+                  >
+                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Perfil</Box>
                   </Button>
+                  <IconButton 
+                    color="inherit" 
+                    onClick={() => { logout(); navigate('/login'); }}
+                    sx={{ display: { xs: 'inline-flex', sm: 'none' } }}
+                  >
+                    <LogoutIcon />
+                  </IconButton>
                   <Button 
                     color="inherit" 
                     startIcon={<LogoutIcon />} 
-                    onClick={() => {
-                      logout();
-                      navigate('/login');
-                    }}
+                    onClick={() => { logout(); navigate('/login'); }}
+                    sx={{ display: { xs: 'none', sm: 'inline-flex' }, fontWeight: 'bold' }}
                   >
                     Salir
                   </Button>
-                </Box>
+                </>
               ) : (
                 <>
-                  <Button color="inherit" onClick={() => navigate('/registro')}>
+                  
+                  <Button 
+                    color="inherit" 
+                    onClick={() => navigate('/registro')}
+                    sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
+                  >
                     Registrarse
                   </Button>
+                  
+            
+                  <IconButton 
+                    color="inherit" 
+                    onClick={() => navigate('/login')}
+                    sx={{ display: { xs: 'inline-flex', sm: 'none' } }}
+                  >
+                    <LoginIcon />
+                  </IconButton>
                   <Button 
                     color="inherit" 
                     variant="outlined"
                     startIcon={<LoginIcon />} 
                     onClick={() => navigate('/login')}
-                    sx={{ borderColor: 'white', '&:hover': { borderColor: 'white', bgcolor: 'rgba(255,255,255,0.1)' } }}
+                    sx={{ 
+                      display: { xs: 'none', sm: 'inline-flex' },
+                      borderColor: 'white', 
+                      '&:hover': { borderColor: 'white', bgcolor: 'rgba(255,255,255,0.1)' } 
+                    }}
                   >
                     Ingresar
                   </Button>
@@ -91,12 +134,11 @@ export default function MainLayout() {
       </AppBar>
 
       {/* CONTENIDO DE LAS PÁGINAS */}
-      <Container component="main" maxWidth="lg" sx={{ mt: 4, mb: 4, flexGrow: 1 }}>
+      <Container component="main" maxWidth="lg" sx={{ mt: 3, mb: 3, flexGrow: 1, px: { xs: 2, sm: 3 } }}>
         <Outlet />
       </Container>
 
       <Footer />
-      
     </Box>
   );
 }

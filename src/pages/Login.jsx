@@ -1,40 +1,45 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; 
 import { Box, Typography, TextField, Button, Paper, Alert, Container } from '@mui/material';
-import { useUser } from '../contexts/UserContext'; // <-- Importamos tu contexto obligatorio
+import { useUser } from '../contexts/UserContext'; 
 
 export default function Login() { 
   const { login } = useUser(); 
   const navigate = useNavigate();
 
- 
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-
   const handleChange = (e) => {
-    setFormData({ 
-      ...formData, 
-      [e.target.name]: e.target.value 
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     setError(null);
+
+    // patrón de correo electrónico (Regex)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Por favor, ingresá un formato de correo electrónico válido.');
+      return;
+    }
+
+    // contraseña
+    if (formData.password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
+
     setLoading(true);
-    
     try {
       const esExitoso = login(formData.email, formData.password);
-      
       if (esExitoso) {
         alert('¡Inicio de sesión correcto!');
         navigate('/perfil'); 
       }
     } catch (err) {
-     
       setError(err.message || 'Credenciales inválidas');
     } finally {
       setLoading(false);
@@ -53,9 +58,7 @@ export default function Login() {
           </Typography>
         </Box>
 
-        
         {error && <Alert severity="error">{error}</Alert>}
-        
         
         <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
           <TextField 

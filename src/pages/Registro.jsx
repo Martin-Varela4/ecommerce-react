@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, Typography, TextField, Button, Paper, Alert, Container } from '@mui/material';
-import { useUser } from '../contexts/UserContext'; //
+import { useUser } from '../contexts/UserContext'; 
 
 export default function Registro() {
   const { registro } = useUser(); 
   const navigate = useNavigate();
-
 
   const [formData, setFormData] = useState({
     nombre: '',
@@ -17,42 +16,52 @@ export default function Registro() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Manejador genérico de los inputs
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Lógica del submit obligatoria (useEffect/Manejo local sin backend)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    setLoading(true);
 
-    // VALIDACIÓN BÁSICA EXIGIDA: Comparar las contraseñas
-    if (formData.password !== formData.confirmarPassword) {
-      setError('Las contraseñas no coinciden');
-      setLoading(false);
+   
+    if (formData.nombre.trim().length < 3) {
+      setError('El nombre debe tener al menos 3 caracteres.');
       return;
     }
 
+    // formato de correo
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Por favor, ingresá un correo electrónico válido.');
+      return;
+    }
+
+    // contraseña
+    if (formData.password.length < 6) {
+      setError('La contraseña es muy corta. Debe tener un mínimo de 6 caracteres.');
+      return;
+    }
+
+    // comparacinn
+    if (formData.password !== formData.confirmarPassword) {
+      setError('Las contraseñas no coinciden. Verificalas.');
+      return;
+    }
+
+    setLoading(true);
     try {
-      // Estructuramos el usuario simulado para la "base de datos" local
       const nuevoUsuario = {
         nombre: formData.nombre,
-        name: formData.nombre, // Duplicamos para compatibilidad con la Navbar vieja
+        name: formData.nombre, 
         email: formData.email,
         password: formData.password
       };
 
-      // Guardamos mediante UserContext
       const esExitoso = registro(nuevoUsuario);
-
       if (esExitoso) {
         alert('¡Usuario registrado con éxito! Ya podés iniciar sesión.');
-        navigate('/login'); // Redirigimos directo al Login
+        navigate('/login'); 
       }
     } catch (err) {
       setError(err.message || 'Ocurrió un error durante el registro');
@@ -73,19 +82,16 @@ export default function Registro() {
           </Typography>
         </Box>
 
-      
         {error && <Alert severity="error">{error}</Alert>}
 
         <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <TextField
             label="Nombre Completo"
-            type="text"
             name="nombre"
             fullWidth
             required
             value={formData.nombre}
             onChange={handleChange}
-            placeholder="Juan Pérez"
           />
           <TextField
             label="Correo Electrónico"
@@ -95,7 +101,6 @@ export default function Registro() {
             required
             value={formData.email}
             onChange={handleChange}
-            placeholder="tu@ejemplo.com"
           />
           <TextField
             label="Contraseña"
@@ -115,7 +120,6 @@ export default function Registro() {
             required
             value={formData.confirmarPassword}
             onChange={handleChange}
-            placeholder="Repetí tu contraseña"
           />
 
           <Button
@@ -131,7 +135,6 @@ export default function Registro() {
           </Button>
         </Box>
 
-       
         <Box sx={{ textAlign: 'center', mt: 1, fontSize: '0.9rem' }}>
           ¿Ya tenés una cuenta?{' '}
           <Link to="/login" style={{ color: '#1976d2', fontWeight: 'bold', textDecoration: 'none' }}>

@@ -3,6 +3,7 @@ import { Box, Typography, TextField, Button, Paper, Alert, Container } from '@mu
 import SendIcon from '@mui/icons-material/Send';
 
 export default function Contacto() {
+
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
@@ -11,6 +12,7 @@ export default function Contacto() {
   });
   
 
+  const [error, setError] = useState(null);
   const [enviado, setEnviado] = useState(false);
 
   const handleChange = (e) => {
@@ -22,10 +24,38 @@ export default function Contacto() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError(null);
+    setEnviado(false);
+
+   
+    if (formData.nombre.trim().length < 3) {
+      setError('El nombre debe tener al menos 3 caracteres.');
+      return;
+    }
+
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError('Por favor, ingresá un formato de correo electrónico válido.');
+      return;
+    }
+
     
+    if (formData.asunto.trim().length < 4) {
+      setError('El asunto de la consulta es muy corto.');
+      return;
+    }
+
+    
+    if (formData.mensaje.trim().length < 10) {
+      setError('El mensaje debe tener al menos 10 caracteres para poder procesar tu consulta.');
+      return;
+    }
+
+   
     setEnviado(true);
     
-    
+  
     setFormData({ nombre: '', email: '', asunto: '', mensaje: '' });
     
     
@@ -44,14 +74,15 @@ export default function Contacto() {
           </Typography>
         </Box>
 
-      
+        {/* ALERTAS DE ESTADO CONTROLADAS POR NUESTROS USESTATE */}
+        {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
         {enviado && (
           <Alert severity="success" sx={{ mb: 3, fontWeight: 'bold' }}>
             ¡Mensaje enviado con éxito! Gracias por contactarnos.
           </Alert>
         )}
 
-        {/* FORMULARIO CONTROLADO */}
+        {/* FORMULARIO CONTROLADO DE MATERIAL UI */}
         <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
           <TextField
             label="Nombre completo"
@@ -60,6 +91,7 @@ export default function Contacto() {
             required
             value={formData.nombre}
             onChange={handleChange}
+            placeholder="Juan Pérez"
           />
           <TextField
             label="Correo Electrónico"
@@ -69,6 +101,7 @@ export default function Contacto() {
             required
             value={formData.email}
             onChange={handleChange}
+            placeholder="tu@ejemplo.com"
           />
           <TextField
             label="Asunto"
@@ -77,6 +110,7 @@ export default function Contacto() {
             required
             value={formData.asunto}
             onChange={handleChange}
+            placeholder="Consulta de stock / Envío"
           />
           <TextField
             label="Mensaje"
@@ -87,6 +121,7 @@ export default function Contacto() {
             required
             value={formData.mensaje}
             onChange={handleChange}
+            placeholder="Escribí detalladamente tu consulta aquí..."
           />
 
           <Button

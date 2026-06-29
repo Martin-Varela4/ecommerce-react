@@ -22,7 +22,7 @@ export default function CartPage() {
           Tu carrito está vacío
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          Explora nuestra tienda y descubre productos increíbles.
+          Explorá nuestra tienda y descubrí productos increíbles.
         </Typography>
         <Button variant="contained" color="primary" onClick={() => navigate('/productos')}>
           Ir al catálogo
